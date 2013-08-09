@@ -1,6 +1,12 @@
 package piyopiyo.py.expressions;
 
 public class Shr1 extends UnaryExpression {
+    public static UnaryExpressionFactory FACTORY =
+        new UnaryExpressionFactory() {
+            @Override
+            public UnaryExpression create(Expression e) { return new Shr1(e); }
+        };
+
     public Shr1(Expression e) {
         super(e);
     }

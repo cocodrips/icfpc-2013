@@ -1,6 +1,14 @@
 package piyopiyo.py.expressions;
 
 public class Or extends BinaryExpression {
+    public static BinaryExpressionFactory FACTORY =
+        new BinaryExpressionFactory() {
+            @Override
+            public BinaryExpression create(Expression e0, Expression e1) {
+                return new Or(e0, e1);
+            }
+        };
+
     public Or(Expression e0, Expression e1) {
         super(e0, e1);
     }
