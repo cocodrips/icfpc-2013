@@ -9,38 +9,24 @@ public class IcfpClient {
 			"http://icfpc2013.cloudapp.net/%s?auth=0169BgRBVTFW0ABEQ24ySLghrsivA51QQ9wqb0ZGvpsH1H";
 
 	public static Problem train(TrainRequest request) throws Exception {
-		String reqJson = IcfpJson.ICFPJSON.format(request);
-		HttpURLConnection conn = connectApi("train", reqJson);
-		BufferedInputStream input = new BufferedInputStream(conn.getInputStream());
-		Problem res = IcfpJson.ICFPJSON.parse(input, Problem.class);
-		input.close();
-		conn.disconnect();
-		return res;
+		return connectApi("train", request, Problem.class);
 	}
 
 	public static GuessResponse guess(GuessRequest request) throws Exception {
-		String reqJson = IcfpJson.ICFPJSON.format(request);
-		HttpURLConnection conn = connectApi("guess", reqJson);
-		BufferedInputStream input = new BufferedInputStream(conn.getInputStream());
-		GuessResponse res = IcfpJson.ICFPJSON.parse(input, GuessResponse.class);
-		input.close();
-		conn.disconnect();
-		return res;
+		return connectApi("guess", request, GuessResponse.class);
 	}
 
 	public static EvalResponse eval(EvalRequest request) throws Exception {
-		String reqJson = IcfpJson.ICFPJSON.format(request);
-		HttpURLConnection conn = connectApi("eval", reqJson);
-		BufferedInputStream input = new BufferedInputStream(conn.getInputStream());
-		EvalResponse res = IcfpJson.ICFPJSON.parse(input, EvalResponse.class);
-		input.close();
-		conn.disconnect();
-		return res;
+		return connectApi("eval", request, EvalResponse.class);
 	}
 
-	private static HttpURLConnection connectApi (String name, String json) throws Exception {
+	private static <TRequest, TResponse> TResponse connectApi(
+			String name, TRequest request, Class<TResponse> responseClass) throws Exception {
+		String json = IcfpJson.ICFPJSON.format(request);
+		System.err.println("Sending: " + json);
+
 		URL url = new URL(String.format(URL_FORMAT, name));
-		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
 		conn.setRequestProperty("Content-Type", "application/json");
@@ -51,10 +37,19 @@ public class IcfpClient {
 		writer.write(json);
 		writer.flush();
 		writer.close();
+		System.err.println("Sent: " + json);
 
 		if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-			new Exception();
+			throw new RuntimeException(conn.getResponseCode() + " " + conn.getResponseMessage());
 		}
-		return conn;
+
+		BufferedInputStream input = new BufferedInputStream(conn.getInputStream());
+		TResponse res = IcfpJson.ICFPJSON.parse(input, responseClass);
+
+		input.close();
+		conn.disconnect();
+		System.err.println("Success.");
+
+		return res;
 	}
 }
