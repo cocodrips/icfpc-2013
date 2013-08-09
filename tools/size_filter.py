@@ -1,10 +1,11 @@
 #! /usr/bin/python
 
 import json
+import os
 import sys
 
 
-MYPROBLEMS = '../myproblems'
+MYPROBLEMS = os.path.join(os.path.dirname(__file__), '../myproblems')
 
 
 def main(argv):
