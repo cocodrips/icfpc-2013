@@ -5,6 +5,9 @@ import java.util.Random;
 
 import piyopiyo.py.EvalRequest;
 import piyopiyo.py.EvalResponse;
+import piyopiyo.py.GuessRequest;
+import piyopiyo.py.GuessResponse;
+import piyopiyo.py.IcfpClient;
 import piyopiyo.py.Operator;
 import piyopiyo.py.Problem;
 import piyopiyo.py.expressions.Program;
@@ -15,23 +18,26 @@ public abstract class SimpleSolver {
 
     private final Random random = new Random();
 
-    public void solve(Problem problem) {
+    public void solve(Problem problem) throws Exception {
         long[] args = new long[NUM_ARGS];
 
         for (int i = 0; i < NUM_ARGS; i++) {
             args[i] = (i < NUM_SIMPLE_ARGS) ? i : random.nextLong();
         }
 
-        EvalRequest req = new EvalRequest(problem.id, args);
-        // TODO(yuizumi): Send a /eval request.
-        EvalResponse res = null;
+        EvalRequest evalReq = new EvalRequest(problem.id, args);
+        EvalResponse evalRes = IcfpClient.eval(evalReq);
 
         Program program = findProgram(getCandidates(problem.operators),
-                                      args, res.outputs);
+                                      args, evalRes.outputs);
         if (program == null) {
             throw new SolutionNotFoundException();
         }
-        // TODO(yuizumi): Send a /guess request.
+        GuessRequest guessReq = new GuessRequest(problem.id, program);
+        GuessResponse guessRes = IcfpClient.guess(guessReq);
+        if (guessRes.status != GuessResponse.Status.win) {
+            throw new SolutionNotFoundException("Failed to answer the problem.");
+        }
     }
 
     private static Program findProgram(List<Program> programs,
