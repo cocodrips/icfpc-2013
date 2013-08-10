@@ -1,13 +1,14 @@
 package piyopiyo.py.solvers;
 
 import static piyopiyo.py.Operator.UNARY_OPERATORS;
+import static piyopiyo.py.expressions.Constant.ONE;
+import static piyopiyo.py.expressions.Constant.ZERO;
 
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-import piyopiyo.py.Operator;
-import piyopiyo.py.expressions.Constant;
+import piyopiyo.py.Problem;
 import piyopiyo.py.expressions.Program;
 import piyopiyo.py.expressions.UnaryExpressionFactory;
 import piyopiyo.py.expressions.Variable;
@@ -18,18 +19,17 @@ public class Size3Solver extends SimpleSolver {
     private Size3Solver() {}
 
     @Override
-    protected List<Program> getCandidates(Operator[] ops) {
-        if (ops.length != 1) {
-            throw new SolutionNotFoundException("Expecting one unary operator.");
-        }
+    public boolean canSolve(Problem problem) {
+        return (problem.operators.length == 1 &&
+                UNARY_OPERATORS.containsKey(problem.operators[0]));
+    }
 
-        UnaryExpressionFactory factory = UNARY_OPERATORS.get(ops[0]);
-        if (factory == null) {
-            throw new SolutionNotFoundException("Expecting one unary operator.");
-        }
+    @Override
+    protected List<Program> getCandidates(Problem problem) {
+        UnaryExpressionFactory f = UNARY_OPERATORS.get(problem.operators[0]);
         Variable x = new Variable("x");
-        return ImmutableList.of(new Program(x, factory.create(x)),
-                                new Program(x, factory.create(Constant.ZERO)),
-                                new Program(x, factory.create(Constant.ONE)));
+        return ImmutableList.of(new Program(x, f.create(x)),
+                                new Program(x, f.create(ZERO)),
+                                new Program(x, f.create(ONE)));
     }
 }
