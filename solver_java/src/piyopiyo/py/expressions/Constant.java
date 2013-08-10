@@ -3,7 +3,7 @@ package piyopiyo.py.expressions;
 /**
  *  Represents a constant, i.e. either 0 or 1.
  */
-public class Constant extends Expression {
+public class Constant extends Term {
     private final long value;
 
     private Constant(long value) {

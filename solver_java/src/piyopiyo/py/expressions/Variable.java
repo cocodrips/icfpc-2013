@@ -3,7 +3,7 @@ package piyopiyo.py.expressions;
 /**
  *  Represents a variable.
  */
-public class Variable extends Expression {
+public class Variable extends Term {
     private final String name;
 
     private long value;
