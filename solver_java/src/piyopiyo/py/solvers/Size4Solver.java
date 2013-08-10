@@ -1,3 +1,4 @@
+/*
 package piyopiyo.py.solvers;
 
 import static piyopiyo.py.Operator.BINARY_OPERATORS;
@@ -71,3 +72,4 @@ public class Size4Solver extends SimpleSolver {
 	}
 	
 }
+*/
