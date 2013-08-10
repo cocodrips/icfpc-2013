@@ -10,12 +10,16 @@ import piyopiyo.py.solvers.*;
 
 public class Main {
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
-        Size3Solver.SOLVER);
+        Size3Solver.SOLVER,
+        Size4OneUnary.SOLVER,
+        Size4TwoUnary.SOLVER,
+        Size4OneBinary.SOLVER);
 
     public static void main(String[] args) throws Exception {
         Problem problem = ICFPJSON.parse(System.in, Problem.class);
         Solver solver = findSolver(problem);
         if (solver != null) {
+            System.err.printf("Using %s.%n", solver.getClass().getName());
             solver.solve(problem);
         } else {
             System.err.println("No solver found. Problem remained untouched.");

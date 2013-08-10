@@ -4,23 +4,23 @@ import static piyopiyo.py.Operator.UNARY_OPERATORS;
 import static piyopiyo.py.expressions.Constant.ONE;
 import static piyopiyo.py.expressions.Constant.ZERO;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-
 import piyopiyo.py.Problem;
+import piyopiyo.py.expressions.Expression;
 import piyopiyo.py.expressions.Program;
 import piyopiyo.py.expressions.UnaryExpressionFactory;
 import piyopiyo.py.expressions.Variable;
 
-public class Size3Solver extends SimpleSolver {
-    public static final Size3Solver SOLVER = new Size3Solver();
+public class Size4OneUnary extends SimpleSolver {
+    public static final Size4OneUnary SOLVER = new Size4OneUnary();
 
-    private Size3Solver() {}
+    private Size4OneUnary() {}
 
     @Override
     public boolean canSolve(Problem problem) {
-        return (problem.size == 3 && problem.operators.length == 1 &&
+        return (problem.size == 4 && problem.operators.length == 1 &&
                 UNARY_OPERATORS.containsKey(problem.operators[0]));
     }
 
@@ -28,8 +28,11 @@ public class Size3Solver extends SimpleSolver {
     protected List<Program> getCandidates(Problem problem) {
         UnaryExpressionFactory f = UNARY_OPERATORS.get(problem.operators[0]);
         Variable x = new Variable("x");
-        return ImmutableList.of(new Program(x, f.create(x)),
-                                new Program(x, f.create(ZERO)),
-                                new Program(x, f.create(ONE)));
+        Expression[] values = new Expression[] { x, ZERO, ONE };
+        List<Program> programs = new ArrayList<Program>();
+        for (Expression value : values) {
+            programs.add(new Program(x, f.create(f.create(value))));
+        }
+        return programs;
     }
 }
