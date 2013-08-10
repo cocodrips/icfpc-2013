@@ -24,7 +24,8 @@ public class SkeltonBasedWithTfold extends SimpleSolver {
     @Override
     public boolean canSolve(Problem problem) {
         return (problem.size <= 13 &&
-                Arrays.asList(problem.operators).contains(Operator.tfold));
+                Arrays.asList(problem.operators).contains(Operator.tfold) &&
+                !Arrays.asList(problem.operators).contains(Operator.if0));
     }
 
     @Override

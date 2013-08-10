@@ -1,13 +1,10 @@
 package piyopiyo.py;
 
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 import net.arnx.jsonic.JSON;
-import net.arnx.jsonic.JSONHint;
 
 import piyopiyo.py.solvers.SkeltonBasedWithTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithoutTfold;
@@ -17,6 +14,8 @@ import com.google.common.collect.ImmutableList;
 
 
 public class AutoAnswerer {
+    private static final int WAIT_SECS_BEFORE_SOLVE = 10;
+
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
         SkeltonBasedWithoutTfold.SOLVER,
         SkeltonBasedWithTfold.SOLVER);
@@ -55,10 +54,10 @@ public class AutoAnswerer {
         for (Problem problem : problems) {
             if (problem.solved) continue;
 
-            System.err.printf("Trying:%n%s%n", JSON.encode(problem, true));
+            System.err.printf("Trying: %s%n", JSON.encode(problem));
             Solver solver = findSolver(problem);
             if (solver != null) {
-                Thread.sleep(10000);  // 10 seconds.
+                Thread.sleep(WAIT_SECS_BEFORE_SOLVE * 1000);
                 System.err.printf("Using %s.%n", solver.getClass().getName());
                 try {
                     solver.solve(problem);
@@ -80,7 +79,7 @@ public class AutoAnswerer {
         int diff = (training) ? lastStatus.trainingScore - firstStatus.trainingScore
             : lastStatus.contestScore - firstStatus.contestScore;
 
-        System.err.format("Success: %d, Failure: %d%nNewly solved: %d%n",
+        System.err.printf("Success: %d, Failure: %d%nNewly solved: %d%n",
                           success, failure, diff);
     }
 }
