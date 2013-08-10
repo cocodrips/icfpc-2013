@@ -1,10 +1,31 @@
 package piyopiyo.py;
 
 import static piyopiyo.py.IcfpJson.ICFPJSON;
-import piyopiyo.py.solvers.Size3Solver;
+
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
+
+import piyopiyo.py.solvers.*;
 
 public class Main {
+    private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
+        Size3Solver.SOLVER);
+
     public static void main(String[] args) throws Exception {
-        Size3Solver.SOLVER.solve(ICFPJSON.parse(System.in, Problem.class));
+        Problem problem = ICFPJSON.parse(System.in, Problem.class);
+        Solver solver = findSolver(problem);
+        if (solver != null) {
+            solver.solve(problem);
+        } else {
+            System.err.println("No solver found. Problem remained untouched.");
+        }
+    }
+
+    private static Solver findSolver(Problem problem) {
+        for (Solver solver : SOLVERS) {
+            if (solver.canSolve(problem)) return solver;
+        }
+        return null;
     }
 }
