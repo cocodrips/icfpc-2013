@@ -8,6 +8,10 @@ public class IcfpClient {
 	static final String URL_FORMAT =
 			"http://icfpc2013.cloudapp.net/%s?auth=0169BgRBVTFW0ABEQ24ySLghrsivA51QQ9wqb0ZGvpsH1H";
 
+	public static Problem[] myproblems() throws Exception {
+		return connectApi("myproblems", new TrainRequest(0, null), Problem[].class);
+	}
+
 	public static Problem train(TrainRequest request) throws Exception {
 		return connectApi("train", request, Problem.class);
 	}
