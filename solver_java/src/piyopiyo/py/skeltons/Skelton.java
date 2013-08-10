@@ -3,9 +3,16 @@ package piyopiyo.py.skeltons;
 import java.util.ArrayList;
 import java.util.List;
 
+import piyopiyo.py.Operator;
+import piyopiyo.py.expressions.Expression;
+import piyopiyo.py.expressions.Variable;
+
 import com.google.common.collect.ImmutableList;
 
 public abstract class Skelton {
+    public abstract List<Expression> buildExpressions(List<Operator> ops,
+                                                      List<Variable> vars);
+
     public static List<List<Skelton>> buildSkeltons(int maxSize) {
         List<List<Skelton>> lists = new ArrayList<List<Skelton>>();
         // size == 0.
