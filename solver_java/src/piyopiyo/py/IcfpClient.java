@@ -4,6 +4,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import net.arnx.jsonic.JSON;
+
 public class IcfpClient {
 	static final String URL_FORMAT =
 			"http://icfpc2013.cloudapp.net/%s?auth=0169BgRBVTFW0ABEQ24ySLghrsivA51QQ9wqb0ZGvpsH1H";
