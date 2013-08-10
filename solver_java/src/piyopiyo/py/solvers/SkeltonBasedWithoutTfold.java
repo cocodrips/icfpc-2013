@@ -13,16 +13,16 @@ import piyopiyo.py.expressions.Program;
 import piyopiyo.py.expressions.Variable;
 import piyopiyo.py.skeltons.Skelton;
 
-public class SkeltonBasedSolver extends SimpleSolver {
-    public static final SkeltonBasedSolver SOLVER =
-        new SkeltonBasedSolver();
+public class SkeltonBasedWithoutTfold extends SimpleSolver {
+    public static final SkeltonBasedWithoutTfold SOLVER =
+        new SkeltonBasedWithoutTfold();
 
-    private SkeltonBasedSolver() {}
+    private SkeltonBasedWithoutTfold() {}
 
     @Override
     public boolean canSolve(Problem problem) {
-        return (problem.size <= 10 &&
-                !Arrays.asList(problem.operators).contains("tfold"));
+        return (problem.size <= 9 &&
+                !Arrays.asList(problem.operators).contains(Operator.tfold));
     }
 
     @Override
