@@ -29,11 +29,13 @@ public abstract class SimpleSolver extends Solver {
             args[i] = (i < NUM_SIMPLE_ARGS) ? i : random.nextLong();
         }
 
+        System.err.println("Generating candidates...");
+        List<Program> candidates = getCandidates(problem);
+
         EvalRequest evalReq = new EvalRequest(problem.id, args);
         EvalResponse evalRes = IcfpClient.eval(evalReq);
 
-        Program program = findProgram(getCandidates(problem),
-                                      args, evalRes.outputs);
+        Program program = findProgram(candidates, args, evalRes.outputs);
         if (program == null) {
             throw new SolutionNotFoundException();
         }
