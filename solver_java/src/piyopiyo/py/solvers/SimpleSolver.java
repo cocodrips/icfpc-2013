@@ -35,30 +35,28 @@ public abstract class SimpleSolver extends Solver {
         EvalRequest evalReq = new EvalRequest(problem.id, args);
         EvalResponse evalRes = IcfpClient.eval(evalReq);
 
-        Program program = findProgram(candidates, args, evalRes.outputs);
-        if (program == null) {
-            throw new SolutionNotFoundException();
-        }
-        GuessRequest guessReq = new GuessRequest(problem.id, program);
-        GuessResponse guessRes = IcfpClient.guess(guessReq);
-        if (guessRes.status != GuessResponse.Status.win) {
-            throw new SolutionNotFoundException("Failed to answer the problem.");
-        }
-    }
-
-    private static Program findProgram(List<Program> programs,
-                                       long[] inputs, long[] outputs) {
-        for (Program program : programs) {
+        for (Program program : candidates) {
             boolean isGood = true;
-            for (int i = 0; i < inputs.length; i++) {
-                if (program.eval(inputs[i]) != outputs[i]) {
+            for (int i = 0; i < args.length; i++) {
+                if (program.eval(args[i]) != evalRes.outputs[i]) {
                     isGood = false;
                     break;
                 }
             }
-            if (isGood) return program;
+            if (!isGood) continue;
+
+            GuessRequest guessReq = new GuessRequest(problem.id, program);
+            GuessResponse guessRes = IcfpClient.guess(guessReq);
+
+            if (guessRes.status == GuessResponse.Status.win) {
+                System.err.println("Solved.");
+                return;
+            } else {
+                System.err.println("Failed: " + guessRes.status);
+            }
         }
-        return null;
+
+        throw new SolutionNotFoundException();
     }
 
     protected abstract List<Program> getCandidates(Problem problem);
