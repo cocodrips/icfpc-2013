@@ -16,7 +16,7 @@ import piyopiyo.py.expressions.Program;
 
 public abstract class SimpleSolver extends Solver {
     private static final int NUM_SIMPLE_ARGS = 64;
-    private static final int NUM_ARGS = 1;
+    private static final int NUM_ARGS = 256;
 
     private final Random random = new Random();
 
@@ -40,21 +40,21 @@ public abstract class SimpleSolver extends Solver {
 
         EvalRequest evalReq = new EvalRequest(problem.id, args);
         EvalResponse evalRes = IcfpClient.eval(evalReq);
-        
+
         // Create list of evalRes
         List<Long> evalResList = new ArrayList<Long>();
         for (int i = 0; i < evalRes.outputs.length; i++) {
-			evalResList.add(evalRes.outputs[i]);
-		}
-        
+            evalResList.add(evalRes.outputs[i]);
+        }
+
         for (Program program : candidates) {
             boolean isGood = true;
             for (int i = 0; i < argsList.size(); i++) {
-            	if (program.eval(argsList.get(i)) != evalResList.get(i)) {
+                if (program.eval(argsList.get(i)) != evalResList.get(i)) {
                     isGood = false;
                     break;
                 }
-			}
+            }
             if (!isGood) continue;
 
             GuessRequest guessReq = new GuessRequest(problem.id, program);
