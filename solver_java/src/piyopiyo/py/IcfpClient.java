@@ -9,7 +9,11 @@ public class IcfpClient {
 			"http://icfpc2013.cloudapp.net/%s?auth=0169BgRBVTFW0ABEQ24ySLghrsivA51QQ9wqb0ZGvpsH1H";
 
 	public static Problem[] myproblems() throws Exception {
-		return connectApi("myproblems", new TrainRequest(0, null), Problem[].class);
+		return connectApi("myproblems", new int[0], Problem[].class);
+	}
+
+	public static StatusResponse status() throws Exception {
+		return connectApi("status", new int[0], StatusResponse.class);
 	}
 
 	public static Problem train(TrainRequest request) throws Exception {
