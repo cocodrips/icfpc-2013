@@ -10,10 +10,8 @@ import piyopiyo.py.solvers.*;
 
 public class Main {
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
-        Size3Solver.SOLVER,
-        Size4OneUnary.SOLVER,
-        Size4TwoUnary.SOLVER,
-        Size4OneBinary.SOLVER);
+        SkeltonBasedWithoutTfold.SOLVER,
+        SkeltonBasedWithTfold.SOLVER);
 
     public static void main(String[] args) throws Exception {
         Problem problem = ICFPJSON.parse(System.in, Problem.class);

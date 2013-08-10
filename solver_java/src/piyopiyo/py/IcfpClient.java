@@ -52,7 +52,7 @@ public class IcfpClient {
 
 		input.close();
 		conn.disconnect();
-		System.err.println("Success.");
+		System.err.println("Data received.");
 
 		return res;
 	}
