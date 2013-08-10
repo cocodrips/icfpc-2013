@@ -7,15 +7,15 @@ public class GuessResponse {
 	public long[] values;
 	public enum Status {win, mismatch, error}
 	
-	public long getArg() {
+	public long getInput() {
 		return values[0];
 	}
 
-	public long getAns() {
+	public long getExpectedOutput() {
 		return values[1];
 	}
 
-	public long getWrong() {
+	public long getYourOutput() {
 		return values[2];
 	}
 }
