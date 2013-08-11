@@ -6,6 +6,8 @@ import java.util.Random;
 
 import net.arnx.jsonic.JSON;
 
+import piyopiyo.py.solvers.SAWithTfold;
+import piyopiyo.py.solvers.SAWithoutTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithoutTfold;
 import piyopiyo.py.solvers.Solver;
@@ -17,8 +19,8 @@ public class AutoAnswerer {
     private static final int WAIT_SECS_BEFORE_SOLVE = 10;
 
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
-        SkeltonBasedWithoutTfold.SOLVER,
-        SkeltonBasedWithTfold.SOLVER);
+       SAWithoutTfold.SOLVER,
+       SAWithTfold.SOLVER);
 
     private static Solver findSolver(Problem problem) {
         for (Solver solver : SOLVERS) {
@@ -52,7 +54,9 @@ public class AutoAnswerer {
         int failure = 0;
 
         for (Problem problem : problems) {
+            if (problem.solved) continue;
             if (problem.timeLeft <= 0.0) continue;
+            if (problem.size > 14) continue;
 
             System.err.printf("Trying: %s%n", JSON.encode(problem));
             Solver solver = findSolver(problem);
