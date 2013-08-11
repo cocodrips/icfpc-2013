@@ -38,8 +38,9 @@ public class If0 extends Expression {
         return e0.isGround() && e1.isGround() && e2.isGround();
     }
 
+    @Override
     public boolean isRedudant() {
-        return e0 instanceof Constant;
+        return (e0 instanceof Constant || e1 == e2);
     }
 
     @Override

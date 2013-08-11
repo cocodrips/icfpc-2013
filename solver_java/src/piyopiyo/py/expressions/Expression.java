@@ -6,6 +6,6 @@ public abstract class Expression {
     public abstract long eval();
     public abstract Expression mutate(Expression eNew);
     public abstract boolean isGround();
-
+    public abstract boolean isRedudant();
     // TODO(yuizumi): Define size() when the need arises.
 }

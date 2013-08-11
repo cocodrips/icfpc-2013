@@ -21,4 +21,9 @@ public class Plus extends BinaryExpression {
 
     @Override
     public String name() { return "plus"; }
+
+    @Override
+    public boolean isRedudant() {
+        return e0 == Constant.ZERO || e1 == Constant.ZERO;
+    }
 }

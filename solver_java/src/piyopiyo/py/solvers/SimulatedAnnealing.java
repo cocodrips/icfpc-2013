@@ -111,7 +111,7 @@ public abstract class SimulatedAnnealing extends Solver {
                         long value = e.eval();
                         if (value == 0 || value == 1) continue;
                     }
-                    if ((e instanceof If0) && ((If0) e).isRedudant()) continue;
+                    if (e.isRedudant()) continue;
                     seeds.add(e);
                 }
             }

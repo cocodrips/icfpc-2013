@@ -19,4 +19,9 @@ public class Not extends UnaryExpression {
 
     @Override
     public String name() { return "not"; }
+
+    @Override
+    public boolean isRedudant() {
+        return e instanceof Not;
+    }
 }

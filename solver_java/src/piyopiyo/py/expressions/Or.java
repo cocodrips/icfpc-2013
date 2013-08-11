@@ -21,4 +21,11 @@ public class Or extends BinaryExpression {
 
     @Override
     public String name() { return "or"; }
+
+    @Override
+    public boolean isRedudant() {
+        return e0 == Constant.ZERO ||
+                e1 == Constant.ZERO ||
+                e0 == e1;
+    }
 }

@@ -21,4 +21,9 @@ public class Xor extends BinaryExpression {
 
     @Override
     public String name() { return "xor"; }
+
+    @Override
+    public boolean isRedudant() {
+        return e0 == Constant.ZERO || e1 == Constant.ZERO;
+    }
 }

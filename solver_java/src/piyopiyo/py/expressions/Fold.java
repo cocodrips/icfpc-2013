@@ -43,4 +43,9 @@ public class Fold extends Expression {
     public String toString() {
         return String.format("(fold %s %s (lambda (%s %s) %s))", e0, e1, x, y, e2);
     }
+
+    @Override
+    public boolean isRedudant() {
+        return e2 == y;
+    }
 }
