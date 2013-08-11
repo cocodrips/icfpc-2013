@@ -33,7 +33,7 @@ public abstract class SimulatedAnnealing extends Solver {
     protected static final int MAX_UPDATES = 100000;
     protected static final int MAX_RETRIES = 30;
 
-    protected final Random random = new Random();
+    protected Random random = new Random();
 
     // Arguments seen in mismatch responses in the past.
     private static final List<Long> FIXED_ARGS = ImmutableList.of(
@@ -74,7 +74,7 @@ public abstract class SimulatedAnnealing extends Solver {
         }
 
         while (true) {
-            Program program = findProgram(inputs, outputs, problem);
+            Program program = findProgram(inputs, outputs, problem.operators);
 
             GuessRequest guessReq = new GuessRequest(problem.id, program);
             GuessResponse guessRes = IcfpClient.guess(guessReq);
@@ -89,12 +89,14 @@ public abstract class SimulatedAnnealing extends Solver {
             } else {
             	throw new RuntimeException(guessRes.message);
             }
+
+            random = new Random();  // Set another random seed.
         }
     }
 
     protected abstract Program findProgram(List<Long> inputs,
                                            List<Long> outputs,
-                                           Problem problem);
+                                           Operator[] operators);
 
     protected static  List<Expression> getSeeds(Operator[] operators,
                                                 Variable... variables) {
@@ -127,24 +129,5 @@ public abstract class SimulatedAnnealing extends Solver {
             }
         }
         return score;
-    }
-
-    protected void addMoreArgs(List<Long> inputs, List<Long> outputs, Problem problem) {
-        long[] args = new long[NUM_ARGS];
-        for (int i = 0; i < NUM_ARGS; i++) {
-            args[i] = random.nextLong();
-        }
-
-        EvalRequest evalReq = new EvalRequest(problem.id, args);
-        EvalResponse evalRes = null;
-        try {
-            evalRes = IcfpClient.eval(evalReq);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        for (int i = 0; i < args.length; i++) {
-            inputs.add(args[i]); outputs.add(evalRes.outputs[i]);
-        }
     }
 }
