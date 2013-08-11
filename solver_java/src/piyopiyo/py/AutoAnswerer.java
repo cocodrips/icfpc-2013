@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 import net.arnx.jsonic.JSON;
-
 import piyopiyo.py.solvers.SAWithTfold;
 import piyopiyo.py.solvers.SAWithoutTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithoutTfold;
+import piyopiyo.py.solvers.SolutionNotFoundException;
 import piyopiyo.py.solvers.Solver;
 
 import com.google.common.collect.ImmutableList;
@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 
 public class AutoAnswerer {
     private static final int WAIT_SECS_BEFORE_SOLVE = 10;
-    private static final int MAX_SIZE = 25;
+    private static final int MAX_SIZE = 30;
 
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
         SAWithoutTfold.SOLVER,
@@ -56,7 +56,7 @@ public class AutoAnswerer {
 
         for (Problem problem : problems) {
             if (problem.solved) continue;
-            if (problem.timeLeft <= 0.0) continue;
+            if (problem.timeLeft < Double.POSITIVE_INFINITY) continue;
             if (problem.size > MAX_SIZE) continue;
 
             System.err.printf("Trying: %s%n", JSON.encode(problem));
@@ -67,6 +67,9 @@ public class AutoAnswerer {
                 try {
                     solver.solve(problem);
                     success++;
+                } catch (SolutionNotFoundException e) {
+                    System.err.println(e.getMessage());
+                    failure++;
                 } catch (Exception e) {
                     if (!training) throw e;
                     System.err.println(e.getMessage());
