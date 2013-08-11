@@ -24,6 +24,6 @@ public class Plus extends BinaryExpression {
 
     @Override
     public boolean isRedundant() {
-        return e0 == Constant.ZERO || e1 == Constant.ZERO;
+        return e0 == Constant.ZERO || e1 == Constant.ZERO || e0 == e1;
     }
 }
