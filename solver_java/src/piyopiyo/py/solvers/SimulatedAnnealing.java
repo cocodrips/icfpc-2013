@@ -35,8 +35,15 @@ public abstract class SimulatedAnnealing extends Solver {
     	checkArgument(canSolve(problem));
    
         long[] args = new long[NUM_ARGS];
-        for (int i = 0; i < NUM_ARGS; i++) {
-            args[i] = (i < NUM_SIMPLE_ARGS) ? i : random.nextLong();
+        int index = 0;
+        for (int i = 0; i < NUM_SIMPLE_ARGS; i++) {
+            args[index++] = i;
+        }
+        for (int i = 1; i < NUM_SIMPLE_ARGS; i++) {
+            args[index++] = -i;
+        }
+        while (index < NUM_ARGS) {
+            args[index++] = random.nextLong();
         }
 
         EvalRequest evalReq = new EvalRequest(problem.id, args);
