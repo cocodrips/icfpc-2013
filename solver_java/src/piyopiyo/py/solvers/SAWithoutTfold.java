@@ -30,7 +30,7 @@ public class SAWithoutTfold extends SimulatedAnnealing {
         List<Expression> seeds = getSeeds(operators, x);
 
         for (int retries = 1; retries <= MAX_RETRIES; retries++) {
-            System.err.printf("Attempt #%d%n", retries);
+            System.err.printf("Attempt #%d", retries);
 
             Expression bestExpr = x;
             int bestScore = 0;
@@ -42,8 +42,10 @@ public class SAWithoutTfold extends SimulatedAnnealing {
                 Program program = new Program(x, expr);
 
                 int score = countScore(program, inputs, outputs);
-                if (score == outputs.size()) return program;
-
+                if (score == outputs.size()) {
+                    System.err.println(" - Success.");
+                    return program;
+                }
                 if (bestScore < score || Math.random() < temp) {
                     bestScore = score;
                     bestExpr = expr;
@@ -52,7 +54,7 @@ public class SAWithoutTfold extends SimulatedAnnealing {
                 temp *= ANNEALING_RATIO;
             }
 
-            System.err.printf("Score = %d%n", bestScore);
+            System.err.printf(" - Score = %d%n.", bestScore);
         }
 
         throw new SolutionNotFoundException();
