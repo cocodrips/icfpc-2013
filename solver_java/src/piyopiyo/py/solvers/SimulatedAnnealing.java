@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableList;
+
 import piyopiyo.py.EvalRequest;
 import piyopiyo.py.EvalResponse;
 import piyopiyo.py.GuessRequest;
@@ -30,7 +32,11 @@ public abstract class SimulatedAnnealing extends Solver {
     protected static final int MAX_UPDATES = 100000;
     protected static final int MAX_RETRIES = 30;
 
-    protected final Random random = new Random();
+    protected Random random = new Random();
+
+    // Arguments seen in mismatch responses in the past.
+    private static final List<Long> FIXED_ARGS = ImmutableList.of(
+        -281470681808895L);
 
     @Override
     public void solve(Problem problem) throws Exception {
@@ -43,6 +49,9 @@ public abstract class SimulatedAnnealing extends Solver {
         }
         for (int i = 1; i < NUM_SIMPLE_ARGS; i++) {
             args[index++] = -i;
+        }
+        for (int i = 0; i < FIXED_ARGS.size(); i++) {
+            args[index++] = FIXED_ARGS.get(i);
         }
         while (index < NUM_ARGS) {
             args[index++] = random.nextLong();
@@ -73,6 +82,8 @@ public abstract class SimulatedAnnealing extends Solver {
             } else {
             	throw new RuntimeException(guessRes.message);
             }
+
+            random = new Random();  // Set another random seed.
         }
     }
 
