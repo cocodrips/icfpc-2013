@@ -36,7 +36,12 @@ public abstract class SimulatedAnnealing extends Solver {
 
     // Arguments seen in mismatch responses in the past.
     private static final List<Long> FIXED_ARGS = ImmutableList.of(
-        -281470681808895L);
+        -281470681808895L, -6148914691236517205L,
+        -9223372036854764882L, 9223367698971042820L,
+        9558L, 4611686018427365634L, 20964L, -4611686018427386366L,
+        11250L, 440350111957104L, 4611967493674041345L, 
+        576462746036467839L, 281479271677952L, -2049638230411249474L,
+        131071L, 81917L);
 
     @Override
     public void solve(Problem problem) throws Exception {
