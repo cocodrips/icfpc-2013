@@ -1,7 +1,5 @@
 package piyopiyo.py;
 
-import sun.net.www.content.audio.wav;
-
 public class Problem {
     public String id;
     public int size;
