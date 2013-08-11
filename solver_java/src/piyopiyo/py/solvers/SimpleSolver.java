@@ -68,7 +68,7 @@ public abstract class SimpleSolver extends Solver {
                 argsList.add(guessRes.getInput());
                 evalResList.add(guessRes.getExpectedOutput());
             } else{
-            	throw new RuntimeException();
+            	throw new RuntimeException(guessRes.message);
             }
         }
         throw new SolutionNotFoundException();

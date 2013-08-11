@@ -52,7 +52,7 @@ public class AutoAnswerer {
         int failure = 0;
 
         for (Problem problem : problems) {
-            if (problem.solved) continue;
+            if (problem.timeLeft <= 0.0) continue;
 
             System.err.printf("Trying: %s%n", JSON.encode(problem));
             Solver solver = findSolver(problem);
