@@ -38,6 +38,10 @@ public class If0 extends Expression {
         return e0.isGround() && e1.isGround() && e2.isGround();
     }
 
+    public boolean isRedudant() {
+        return e0 instanceof Constant;
+    }
+
     @Override
     public String toString() {
         return String.format("(if0 %s %s %s)", e0, e1, e2);

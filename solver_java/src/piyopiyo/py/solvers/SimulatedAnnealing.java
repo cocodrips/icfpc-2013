@@ -19,6 +19,7 @@ import piyopiyo.py.Operator;
 import piyopiyo.py.Problem;
 import piyopiyo.py.expressions.Constant;
 import piyopiyo.py.expressions.Expression;
+import piyopiyo.py.expressions.If0;
 import piyopiyo.py.expressions.Program;
 import piyopiyo.py.expressions.Variable;
 import piyopiyo.py.skeltons.Skelton;
@@ -110,6 +111,7 @@ public abstract class SimulatedAnnealing extends Solver {
                         long value = e.eval();
                         if (value == 0 || value == 1) continue;
                     }
+                    if ((e instanceof If0) && ((If0) e).isRedudant()) continue;
                     seeds.add(e);
                 }
             }
