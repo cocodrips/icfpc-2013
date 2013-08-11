@@ -33,5 +33,4 @@ public class Constant extends Term {
 
     public static final Constant ZERO = new Constant(0);
     public static final Constant ONE = new Constant(1);
-
 }

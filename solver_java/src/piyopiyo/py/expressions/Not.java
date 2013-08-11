@@ -21,7 +21,7 @@ public class Not extends UnaryExpression {
     public String name() { return "not"; }
 
     @Override
-    public boolean isRedudant() {
+    public boolean isRedundant() {
         return e instanceof Not;
     }
 }

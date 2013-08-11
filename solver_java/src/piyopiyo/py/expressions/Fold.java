@@ -45,7 +45,7 @@ public class Fold extends Expression {
     }
 
     @Override
-    public boolean isRedudant() {
-        return e2 == y;
+    public boolean isRedundant() {
+        return e2 == y || e2 instanceof Constant;
     }
 }

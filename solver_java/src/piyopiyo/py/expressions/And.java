@@ -23,9 +23,7 @@ public class And extends BinaryExpression {
     public String name() { return "and"; }
 
     @Override
-    public boolean isRedudant() {
-        return e0 == Constant.ZERO ||
-                e1 == Constant.ZERO ||
-                e0 == e1;
+    public boolean isRedundant() {
+        return e0 == Constant.ZERO || e1 == Constant.ZERO || e0 == e1;
     }
 }

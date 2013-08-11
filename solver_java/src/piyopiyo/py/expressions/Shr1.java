@@ -19,9 +19,4 @@ public class Shr1 extends UnaryExpression {
 
     @Override
     public String name() { return "shr1"; }
-
-    @Override
-    public boolean isRedudant() {
-        return e instanceof Constant;
-    }
 }

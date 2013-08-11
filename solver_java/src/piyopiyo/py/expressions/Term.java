@@ -6,7 +6,7 @@ public abstract class Term extends Expression {
         return eNew;
     }
     @Override
-    public boolean isRedudant() {
+    public boolean isRedundant() {
         return false;
     }
 }

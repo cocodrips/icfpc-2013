@@ -39,7 +39,7 @@ public class If0 extends Expression {
     }
 
     @Override
-    public boolean isRedudant() {
+    public boolean isRedundant() {
         return (e0 instanceof Constant || e1 == e2);
     }
 

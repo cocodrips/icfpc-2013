@@ -23,9 +23,7 @@ public class Or extends BinaryExpression {
     public String name() { return "or"; }
 
     @Override
-    public boolean isRedudant() {
-        return e0 == Constant.ZERO ||
-                e1 == Constant.ZERO ||
-                e0 == e1;
+    public boolean isRedundant() {
+        return e0 == Constant.ZERO || e1 == Constant.ZERO || e0 == e1;
     }
 }

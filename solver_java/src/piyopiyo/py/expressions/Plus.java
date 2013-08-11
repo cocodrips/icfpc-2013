@@ -23,7 +23,7 @@ public class Plus extends BinaryExpression {
     public String name() { return "plus"; }
 
     @Override
-    public boolean isRedudant() {
+    public boolean isRedundant() {
         return e0 == Constant.ZERO || e1 == Constant.ZERO;
     }
 }
