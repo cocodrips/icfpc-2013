@@ -29,4 +29,9 @@ public abstract class UnaryExpression extends Expression {
     public String toString() {
         return String.format("(%s %s)", name(), e);
     }
+
+    @Override
+    public Expression replaceTerm(Variable x, Variable y) {
+        return factory().create(e.replaceTerm(x, y));
+    }
 }

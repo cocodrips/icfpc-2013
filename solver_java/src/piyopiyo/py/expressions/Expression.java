@@ -9,5 +9,6 @@ public abstract class Expression {
     public boolean isRedundant() {
         return false;
     }
+    public abstract Expression replaceTerm(Variable x, Variable y);
     // TODO(yuizumi): Define size() when the need arises.
 }

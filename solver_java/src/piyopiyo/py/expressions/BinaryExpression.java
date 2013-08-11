@@ -35,4 +35,9 @@ public abstract class BinaryExpression extends Expression {
     public String toString() {
         return String.format("(%s %s %s)", name(), e0, e1);
     }
+
+    @Override
+    public Expression replaceTerm(Variable x, Variable y) {
+        return factory().create(e0.replaceTerm(x, y), e1.replaceTerm(x, y));
+    }
 }

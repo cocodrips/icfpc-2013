@@ -47,4 +47,9 @@ public class If0 extends Expression {
     public String toString() {
         return String.format("(if0 %s %s %s)", e0, e1, e2);
     }
+
+    @Override
+    public Expression replaceTerm(Variable x, Variable y) {
+        return new If0(e0.replaceTerm(x, y), e1.replaceTerm(x, y), e2.replaceTerm(x, y));
+    }
 }

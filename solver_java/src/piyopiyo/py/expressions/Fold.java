@@ -36,8 +36,19 @@ public class Fold extends Expression {
 
     @Override
     public Expression mutate(Expression eNew) {
-        throw new UnsupportedOperationException();
+        if (Math.random() < PROB_MUTATE_SELF) {
+            return eNew;
+        }
+        double p = Math.random() * 3;
+        if (p < 1) {
+            return new Fold(e0.mutate(eNew), e1, x, y, e2);
+        } else if (p < 2) {
+            return new Fold(e0, e1.mutate(eNew), x, y, e2);
+        } else {
+            return new Fold(e0, e1, x, y, eNew.replaceTerm(x, y));
+        }
     }
+
 
     @Override
     public String toString() {
@@ -47,5 +58,10 @@ public class Fold extends Expression {
     @Override
     public boolean isRedundant() {
         return e2 == y || e2 instanceof Constant;
+    }
+
+    @Override
+    public Expression replaceTerm(Variable x, Variable y) {
+        return new Fold(e0.replaceTerm(x, y), e1.replaceTerm(x, y), this.x, this.y, e2.replaceTerm(x, y));
     }
 }
