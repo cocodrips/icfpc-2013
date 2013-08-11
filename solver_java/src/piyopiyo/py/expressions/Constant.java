@@ -22,6 +22,11 @@ public class Constant extends Term {
     }
 
     @Override
+    public boolean isGround() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return Long.toString(value);
     }

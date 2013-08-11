@@ -27,6 +27,11 @@ public abstract class BinaryExpression extends Expression {
     }
 
     @Override
+    public boolean isGround() {
+        return e0.isGround() && e1.isGround();
+    }
+
+    @Override
     public String toString() {
         return String.format("(%s %s %s)", name(), e0, e1);
     }

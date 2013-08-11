@@ -21,6 +21,11 @@ public abstract class UnaryExpression extends Expression {
     }
 
     @Override
+    public boolean isGround() {
+        return e.isGround();
+    }
+
+    @Override
     public String toString() {
         return String.format("(%s %s)", name(), e);
     }

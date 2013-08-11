@@ -19,8 +19,8 @@ public class AutoAnswerer {
     private static final int WAIT_SECS_BEFORE_SOLVE = 10;
 
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
-       SAWithoutTfold.SOLVER,
-       SAWithTfold.SOLVER);
+        SAWithoutTfold.SOLVER,
+        SAWithTfold.SOLVER);
 
     private static Solver findSolver(Problem problem) {
         for (Solver solver : SOLVERS) {

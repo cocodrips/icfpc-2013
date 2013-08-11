@@ -30,6 +30,11 @@ public class Fold extends Expression {
     }
 
     @Override
+    public boolean isGround() {
+        return e0.isGround() && e1.isGround() && e2.isGround();
+    }
+
+    @Override
     public Expression mutate(Expression eNew) {
         throw new UnsupportedOperationException();
     }

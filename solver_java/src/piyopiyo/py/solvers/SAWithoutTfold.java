@@ -54,7 +54,7 @@ public class SAWithoutTfold extends SimulatedAnnealing {
                 temp *= ANNEALING_RATIO;
             }
 
-            System.err.printf(" - Score = %d%n.", bestScore);
+            System.err.printf(" - Score = %d.%n", bestScore);
         }
 
         throw new SolutionNotFoundException();

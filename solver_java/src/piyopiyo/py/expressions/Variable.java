@@ -32,6 +32,11 @@ public class Variable extends Term {
     }
 
     @Override
+    public boolean isGround() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return name;
     }

@@ -2,6 +2,7 @@ package piyopiyo.py.solvers;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import piyopiyo.py.GuessResponse;
 import piyopiyo.py.IcfpClient;
 import piyopiyo.py.Operator;
 import piyopiyo.py.Problem;
+import piyopiyo.py.expressions.Constant;
 import piyopiyo.py.expressions.Expression;
 import piyopiyo.py.expressions.Program;
 import piyopiyo.py.expressions.Variable;
@@ -78,8 +80,8 @@ public abstract class SimulatedAnnealing extends Solver {
                                            List<Long> outputs,
                                            Operator[] operators);
 
-    protected List<Expression> getSeeds(Operator[] operators,
-                                        Variable... variables) {
+    protected static  List<Expression> getSeeds(Operator[] operators,
+                                                Variable... variables) {
         List<Operator> opsList = Arrays.asList(operators);
         List<Variable> varsList = Arrays.asList(variables);
 
@@ -87,14 +89,20 @@ public abstract class SimulatedAnnealing extends Solver {
         List<List<Skelton>> allSkeltons = Skelton.buildSkeltons(5);
         for (List<Skelton> skeltons : allSkeltons) {
             for (Skelton skelton : skeltons) {
-                seeds.addAll(skelton.buildExpressions(opsList, varsList));
+                for (Expression e : skelton.buildExpressions(opsList, varsList)) {
+                    if (e.isGround() && !(e instanceof Constant)) {
+                        long value = e.eval();
+                        if (value == 0 || value == 1) continue;
+                    }
+                    seeds.add(e);
+                }
             }
         }
         return seeds;
     }
 
-    protected int countScore(Program program, List<Long> inputs,
-                             List<Long> outputs) {
+    protected static int countScore(Program program, List<Long> inputs,
+                                    List<Long> outputs) {
         int score = 0;
         for (int i = 0; i < inputs.size(); i++) {
             if (program.eval(inputs.get(i)) == outputs.get(i)) {
