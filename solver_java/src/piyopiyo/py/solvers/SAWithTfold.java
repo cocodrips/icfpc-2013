@@ -26,12 +26,12 @@ public class SAWithTfold extends SimulatedAnnealing {
     @Override
     protected Program findProgram(List<Long> inputs,
                                   List<Long> outputs,
-                                  Operator[] operators) {
+                                  Problem problem) {
         Variable x = new Variable("x");
         Variable y = new Variable("y");
         Variable z = new Variable("z");
 
-        List<Expression> seeds = getSeeds(operators, x, y, z);
+        List<Expression> seeds = getSeeds(problem.operators, x, y, z);
 
         for (int retries = 1; retries <= MAX_RETRIES; retries++) {
             System.err.printf("Attempt #%d", retries);
@@ -60,6 +60,7 @@ public class SAWithTfold extends SimulatedAnnealing {
             }
 
             System.err.printf(" - Score = %d.%n", bestScore);
+            if (retries % 5 == 0) addMoreArgs(inputs, outputs, problem);
         }
 
         throw new SolutionNotFoundException();
