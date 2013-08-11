@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.google.common.collect.ImmutableList;
-
 import piyopiyo.py.EvalRequest;
 import piyopiyo.py.EvalResponse;
 import piyopiyo.py.GuessRequest;
@@ -16,27 +14,21 @@ import piyopiyo.py.GuessResponse;
 import piyopiyo.py.IcfpClient;
 import piyopiyo.py.Operator;
 import piyopiyo.py.Problem;
-import piyopiyo.py.expressions.*;
+import piyopiyo.py.expressions.Expression;
+import piyopiyo.py.expressions.Program;
+import piyopiyo.py.expressions.Variable;
 import piyopiyo.py.skeltons.Skelton;
 
-public class SimulatedAnnealing extends Solver {
-    public static final SimulatedAnnealing SOLVER = new SimulatedAnnealing();
-
+public abstract class SimulatedAnnealing extends Solver {
     private static final int NUM_SIMPLE_ARGS = 64;
     private static final int NUM_ARGS = 256;
 
-    private static final double ANNEALING_RATIO = 0.5;
-    private static final int MAX_UPDATES = 10000;
-    private static final int MAX_RETRIES = 10;
+    protected static final double ANNEALING_RATIO = 0.5;
 
-    private final Random random = new Random();
+    protected static final int MAX_UPDATES = 10000;
+    protected static final int MAX_RETRIES = 10;
 
-    private SimulatedAnnealing() {}
-
-    @Override
-    public boolean canSolve(Problem problem) {
-        return true;
-    }
+    protected final Random random = new Random();
 
     @Override
     public void solve(Problem problem) throws Exception {
@@ -57,8 +49,7 @@ public class SimulatedAnnealing extends Solver {
         }
 
         while (true) {
-            Program program = findProgram(Arrays.asList(problem.operators),
-                                          inputs, outputs);
+            Program program = findProgram(inputs, outputs, problem.operators);
 
             GuessRequest guessReq = new GuessRequest(problem.id, program);
             GuessResponse guessRes = IcfpClient.guess(guessReq);
@@ -76,44 +67,33 @@ public class SimulatedAnnealing extends Solver {
         }
     }
 
-    private Program findProgram(List<Operator> operators,
-                                List<Long> inputs, List<Long> outputs) {
-        Variable x = new Variable("x");
+    protected abstract Program findProgram(List<Long> inputs,
+                                           List<Long> outputs,
+                                           Operator[] operators);
 
+    protected List<Expression> getSeeds(Operator[] operators,
+                                        Variable... variables) {
+        List<Operator> opsList = Arrays.asList(operators);
+        List<Variable> varsList = Arrays.asList(variables);
+
+        List<Expression> seeds = new ArrayList<Expression>();
         List<List<Skelton>> allSkeltons = Skelton.buildSkeltons(5);
-        List<Expression> exprs = new ArrayList<Expression>();
-        for (int size = 1; size <= 5; size++) {
-            for (Skelton skelton : allSkeltons.get(size)) {
-                exprs.addAll(skelton.buildExpressions(operators, ImmutableList.of(x)));
+        for (List<Skelton> skeltons : allSkeltons) {
+            for (Skelton skelton : skeltons) {
+                seeds.addAll(skelton.buildExpressions(opsList, varsList));
             }
         }
+        return seeds;
+    }
 
-        for (int retries = 1; retries <= MAX_RETRIES; retries++) {
-            System.err.printf("Attempt #%d%n", retries);
-
-            Program bestProgram = new Program(x, x);
-            int bestScore = 0;
-            double temp = 1.0;
-            for (int updates = 0; updates < MAX_UPDATES; updates++) {
-                Program program = bestProgram.mutate(
-                    exprs.get(random.nextInt(exprs.size())));
-                int score = 0;
-                for (int i = 0; i < inputs.size(); i++) {
-                    if (program.eval(inputs.get(i)) == outputs.get(i)) {
-                        ++score;
-                    }
-                }
-                if (score == inputs.size()) return program;
-
-                if (bestScore < score || Math.random() < temp) {
-                    bestProgram = program;
-                    bestScore = score;
-                }
-
-                temp *= ANNEALING_RATIO;
+    protected int countScore(Program program, List<Long> inputs,
+                             List<Long> outputs) {
+        int score = 0;
+        for (int i = 0; i < inputs.size(); i++) {
+            if (program.eval(inputs.get(i)) == outputs.get(i)) {
+                ++score;
             }
         }
-
-        throw new SolutionNotFoundException();
+        return score;
     }
 }
