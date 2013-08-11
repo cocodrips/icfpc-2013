@@ -19,6 +19,10 @@ public class Program {
         return value;
     }
 
+    public Program mutate(Expression eNew) {
+        return new Program(x, e.mutate(eNew));
+    }
+
     @Override
     public String toString() {
         return String.format("(lambda (%s) %s)", x, e);

@@ -10,7 +10,15 @@ public abstract class UnaryExpression extends Expression {
         this.e = e;
     }
 
+    protected abstract UnaryExpressionFactory factory();
     protected abstract String name();
+
+    public Expression mutate(Expression eNew) {
+        if (Math.random() < PROB_MUTATE_SELF) {
+            return eNew;
+        }
+        return factory().create(e.mutate(eNew));
+    }
 
     @Override
     public String toString() {

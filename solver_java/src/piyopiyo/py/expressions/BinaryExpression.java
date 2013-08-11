@@ -11,7 +11,20 @@ public abstract class BinaryExpression extends Expression {
         this.e1 = e1;
     }
 
+    protected abstract BinaryExpressionFactory factory();
     protected abstract String name();
+
+    @Override
+    public Expression mutate(Expression eNew) {
+        if (Math.random() < PROB_MUTATE_SELF) {
+            return eNew;
+        }
+        if (Math.random() < 0.5) {
+            return factory().create(e0.mutate(eNew), e1);
+        } else {
+            return factory().create(e0, e1.mutate(eNew));
+        }
+    }
 
     @Override
     public String toString() {

@@ -30,6 +30,11 @@ public class Fold extends Expression {
     }
 
     @Override
+    public Expression mutate(Expression eNew) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String toString() {
         return String.format("(fold %s %s (lambda (%s %s) %s))", e0, e1, x, y, e2);
     }

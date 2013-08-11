@@ -15,5 +15,8 @@ public class Not extends UnaryExpression {
     public long eval() { return ~e.eval(); }
 
     @Override
+    public UnaryExpressionFactory factory() { return FACTORY; }
+
+    @Override
     public String name() { return "not"; }
 }

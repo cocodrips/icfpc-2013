@@ -17,5 +17,8 @@ public class Xor extends BinaryExpression {
     public long eval() { return e0.eval() ^ e1.eval(); }
 
     @Override
+    public BinaryExpressionFactory factory() { return FACTORY; }
+
+    @Override
     public String name() { return "xor"; }
 }

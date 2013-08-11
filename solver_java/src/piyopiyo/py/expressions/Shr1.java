@@ -15,5 +15,8 @@ public class Shr1 extends UnaryExpression {
     public long eval() { return e.eval() >>> 1; }
 
     @Override
+    public UnaryExpressionFactory factory() { return FACTORY; }
+
+    @Override
     public String name() { return "shr1"; }
 }
