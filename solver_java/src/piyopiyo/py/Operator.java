@@ -7,7 +7,7 @@ import piyopiyo.py.expressions.*;
 public enum Operator {
     not, shl1, shr1, shr4, shr16,
     and, or, xor, plus,
-    if0, fold, tfold;
+    if0, fold, tfold, bonus;
 
     public static final Map<Operator, UnaryExpressionFactory> UNARY_OPERATORS =
         ImmutableMap.<Operator, UnaryExpressionFactory> builder()
