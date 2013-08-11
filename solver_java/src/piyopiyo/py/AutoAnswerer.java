@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 
 public class AutoAnswerer {
     private static final int WAIT_SECS_BEFORE_SOLVE = 10;
-    private static final int MAX_SIZE = 20;
+    private static final int MAX_SIZE = 25;
 
     private static final List<Solver> SOLVERS = ImmutableList.<Solver> of(
         SAWithoutTfold.SOLVER,
