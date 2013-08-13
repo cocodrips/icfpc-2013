@@ -30,8 +30,8 @@ public abstract class SimulatedAnnealing extends Solver {
 
     protected static final double ANNEALING_RATIO = 0.5;
 
-    protected static final int MAX_UPDATES = 100000;
-    protected static final int MAX_RETRIES = 30;
+    protected static final int MAX_UPDATES = 30000;
+    protected static final int MAX_RETRIES = 400;
 
     protected Random random = new Random();
 

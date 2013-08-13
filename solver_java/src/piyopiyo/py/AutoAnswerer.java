@@ -10,6 +10,7 @@ import piyopiyo.py.solvers.SAWithTfold;
 import piyopiyo.py.solvers.SAWithoutTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithTfold;
 import piyopiyo.py.solvers.SkeltonBasedWithoutTfold;
+import piyopiyo.py.solvers.SolutionNotFoundException;
 import piyopiyo.py.solvers.Solver;
 
 import com.google.common.collect.ImmutableList;
@@ -67,6 +68,9 @@ public class AutoAnswerer {
                 try {
                     solver.solve(problem);
                     success++;
+                } catch (SolutionNotFoundException e) {
+                    System.err.println(e.getMessage());
+                    failure++;
                 } catch (Exception e) {
                     if (!training) throw e;
                     System.err.println(e.getMessage());

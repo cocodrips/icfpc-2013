@@ -19,7 +19,7 @@ public class SAWithTfold extends SimulatedAnnealing {
     @Override
     public boolean canSolve(Problem problem) {
         List<Operator> ops = Arrays.asList(problem.operators);
-        return (ops.contains(Operator.tfold) && !ops.contains(Operator.fold) &&
+        return (ops.contains(Operator.tfold) && ops.contains(Operator.fold) &&
                 !ops.contains(Operator.bonus));
     }
 
